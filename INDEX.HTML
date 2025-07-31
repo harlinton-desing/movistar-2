@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario Colombia Gamer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .form-section {
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.5);
+      margin-bottom: 2rem;
+    }
+    label {
+      color: #00ffe7;
+    }
+    .btn-custom {
+      background-color: #00ffe7;
+      color: #000;
+      font-weight: bold;
+    }
+    .btn-custom:hover {
+      background-color: #00bfbf;
+    }
+    select, input {
+      background-color: #111827;
+      color: #00ffe7;
+      border: 1px solid #2c2c54;
+    }
+    select option {
+      background-color: #0d1220;
+      color: #00ffe7;
+    }
+    #resumenDatos {
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-4">
+  <div id="consentimiento" class="form-section text-center">
+    <img src="https://media.giphy.com/media/3o7TKtnuHOHHUjR38Y/giphy.gif" width="100%" alt="Intro">
+    <h2 class="mt-3">Tratamiento de datos</h2>
+    <p>PARA CONTINUAR, ES IMPORTANTE CONOCER SI VOLUNTARIAMENTE ACEPTAS SUMINISTRAR TUS DATOS PERSONALES
+    ARTÍCULO 5 LEY 1581 DE 2012</p>
+    <button class="btn btn-custom me-2" onclick="mostrarFormulario()">Acepto suministrar</button>
+    <button class="btn btn-danger" onclick="alert('Sin aceptar tratamiento de datos no es posible enviarle el servicio')">No acepto</button>
+  </div>
+
+  <form id="formulario" class="form-section d-none">
+    <img src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif" width="100%" style="height: 60vh; object-fit: cover;" alt="Encabezado">
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <label>Nombre completo</label>
+        <input type="text" id="nombre" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label>Tipo de documento</label>
+        <select id="tipoDocumento" class="form-control" required>
+          <option value="">Seleccione</option>
+          <option value="CC">Cédula de Ciudadanía</option>
+          <option value="TI">Tarjeta de Identidad</option>
+          <option value="CE">Cédula de Extranjería</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label>Número de documento</label>
+        <input type="text" id="numeroDocumento" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label>Fecha de expedición</label>
+        <input type="date" id="fechaExp" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label>Fecha de nacimiento</label>
+        <input type="date" id="fechaNac" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label>Correo electrónico</label>
+        <input type="email" id="email" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label>Dirección completa</label>
+        <input type="text" id="direccion" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label>Ciudad o Municipio</label>
+        <select id="ciudad" class="form-control" required></select>
+      </div>
+      <div class="col-md-6">
+        <label>Barrio</label>
+        <input type="text" id="barrio" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label>Estrato</label>
+        <select id="estrato" class="form-control" required>
+          <option value="">Seleccione</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label>Celular</label>
+        <input type="tel" id="celular" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label>Plan</label>
+        <select id="plan" class="form-control" onchange="actualizarValorPlan()" required>
+          <option value="">Seleccione...</option>
+          <option value="Básico">Básico</option>
+          <option value="Estándar">Estándar</option>
+          <option value="Premium">Premium</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label>Valor del plan</label>
+        <input type="text" id="valorPlan" class="form-control" readonly>
+      </div>
+    </div>
+    <div class="mt-4 text-center">
+      <button type="button" class="btn btn-custom" onclick="mostrarResumen()">Enviar</button>
+      <button type="button" class="btn btn-danger" onclick="motivoCancelacion()">Cancelar</button>
+    </div>
+  </form>
+
+  <div id="resumen" class="form-section d-none text-center">
+    <h4>Resumen de datos</h4>
+    <div id="resumenDatos" class="mb-3"></div>
+    <button class="btn btn-success me-2" onclick="enviarWhatsapp()">✅ Confirmar</button>
+    <button class="btn btn-warning" onclick="corregirFormulario()">✏️ Corregir</button>
+  </div>
+</div>
+
+<script>
+  async function cargarMunicipios() {
+    const response = await fetch("https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.json");
+    const departamentos = await response.json();
+    const selectCiudad = document.getElementById("ciudad");
+
+    departamentos.forEach(dep => {
+      dep.ciudades.forEach(mun => {
+        const option = document.createElement("option");
+        option.value = `${mun} (${dep.departamento})`;
+        option.textContent = `${mun} (${dep.departamento})`;
+        selectCiudad.appendChild(option);
+      });
+    });
+  }
+
+  cargarMunicipios();
+
+  function mostrarFormulario() {
+    document.getElementById("consentimiento").classList.add("d-none");
+    document.getElementById("formulario").classList.remove("d-none");
+  }
+
+  function actualizarValorPlan() {
+    const plan = document.getElementById("plan").value;
+    const valor = plan === "Básico" ? 30000 : plan === "Estándar" ? 50000 : plan === "Premium" ? 70000 : "";
+    document.getElementById("valorPlan").value = valor;
+  }
+
+  function mostrarResumen() {
+    const campos = ["nombre", "tipoDocumento", "numeroDocumento", "fechaExp", "fechaNac", "email", "direccion", "ciudad", "barrio", "estrato", "celular", "plan", "valorPlan"];
+    for (const id of campos) {
+      if (!document.getElementById(id).value) {
+        alert(`Por favor complete el campo: ${id}`);
+        return;
+      }
+    }
+    const etiquetas = {
+      nombre: "👤 Nombre",
+      tipoDocumento: "🆔 Tipo Doc",
+      numeroDocumento: "#️⃣ Número Doc",
+      fechaExp: "📅 Fecha Exp.",
+      fechaNac: "🎂 Fecha Nac.",
+      email: "📧 Correo",
+      direccion: "🏠 Dirección",
+      ciudad: "🏙️ Ciudad",
+      barrio: "📍 Barrio",
+      estrato: "📊 Estrato",
+      celular: "📱 Celular",
+      plan: "📦 Plan",
+      valorPlan: "💰 Valor"
+    };
+    const resumen = campos.map(id => `${etiquetas[id]}: ${document.getElementById(id).value}`).join("\n");
+    document.getElementById("resumenDatos").textContent = resumen;
+    document.getElementById("formulario").classList.add("d-none");
+    document.getElementById("resumen").classList.remove("d-none");
+  }
+
+  function corregirFormulario() {
+    document.getElementById("resumen").classList.add("d-none");
+    document.getElementById("formulario").classList.remove("d-none");
+  }
+
+  function motivoCancelacion() {
+    const motivo = prompt("¿Por qué desea cancelar?");
+    if (motivo) alert("Gracias por su respuesta");
+  }
+
+  function enviarWhatsapp() {
+    const datos = document.getElementById("resumenDatos").textContent;
+    const mensaje = encodeURIComponent("🚀 NUEVO FORMULARIO:\n" + datos);
+    window.open(`https://wa.me/573103509843?text=${mensaje}`, "_blank");
+  }
+</script>
+
+</body>
+</html>
